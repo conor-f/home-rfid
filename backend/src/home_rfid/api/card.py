@@ -42,7 +42,8 @@ def add_card():
     actions = bottle.request.json.get('actions', [])
 
     print(f'ACTIONS: {actions}')
-    db.add_card('todo_card_id', card_name, actions)
+    db.add_card('UNSET_CARD_ID', card_name, actions)
+    db.set_is_configuring(True)
 
     return {
         'todo': 'todo'

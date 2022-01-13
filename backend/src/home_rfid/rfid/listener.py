@@ -33,6 +33,7 @@ class RFIDListener:
         Triggered when an unregistered card is read.
         '''
         print(f'handle_unregistered_card {card_id}')
+        self.db.associate_id_with_card(card_id)
         self.db.set_is_configuring(False)
 
     def handle_registered_card(self, card):

@@ -80,6 +80,15 @@ class HomeRFIDDB:
         )
         self.con.commit()
 
+    def associate_id_with_card(self, card_id):
+        '''
+        TODO: This is awful conceptually...
+        '''
+        self.cur.execute(
+            f"UPDATE cards SET card_id={card_id} WHERE card_id=UNSET_CARD_ID"
+        )
+        self.con.commit()
+
     def is_configuring(self):
         '''
         Return True if the reader should be in configure mode for the next
