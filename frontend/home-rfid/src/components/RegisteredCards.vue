@@ -1,23 +1,22 @@
 <template>
-  <div>
-    <ul
+  <div id="cardFlexbox">
+    <div
       v-for="(card, card_id) in configuredCards"
       :key="card_id"
-    >
-      <li>
-        <CardComponent
-          :card_id="card_id"
-          :card="card"
-          />
-      </li>
-    </ul>
-    
-    <va-button
-      class="float-right"
-      icon="add"
-      @click="showAddModal = true"
-      />
+      class="cardFlexboxItem"
+      >
+      <CardComponent
+        :card_id="card_id"
+        :card="card"
+        />
+    </div>
   </div>
+
+  <va-button
+    class="float-right"
+    icon="add"
+    @click="showAddModal = true"
+    />
 
   <AddCardModal
     v-if="showAddModal"
@@ -64,4 +63,16 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+#cardFlexbox {
+  display: flex;
+  justify-content: space-around;
+  flex-flow: row wrap;
+  align-content: center;
+  width: 100%;
+}
+
+#cardFlexbox > .cardFlexboxItem {
+  margin-bottom: 40px;
+  width: 800px;
+}
 </style>

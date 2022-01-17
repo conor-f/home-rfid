@@ -41,7 +41,7 @@
         @click="addAction"
         />
 
-      {{ actions }}
+        <!--{{ actions }}-->
     </div>
   </va-modal>
 </template>
