@@ -43,8 +43,8 @@ class HomeRFIDDB:
         details = {}
 
         for r in [dict(row) for row in self.cur.fetchall()]:
-            print(r)
             details[r['card_id']] = {
+                'id': r['card_id'],
                 'name': r['name'],
                 'actions': [
                     self.get_action_from_id(action_id) for action_id in

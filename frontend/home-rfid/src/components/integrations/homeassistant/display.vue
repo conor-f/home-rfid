@@ -5,7 +5,11 @@
         v-if="actionDetails.entityID.includes('light')"
         name="lightbulb"
         class="mr-1"/>
-      {{ actionDetails.entityID }}: {{ actionDetails.action }}
+      <va-icon
+        v-if="actionDetails.entityID.includes('switch')"
+        name="toggle_on"
+        class="mr-1"/>
+      {{ actionDetails.entityName }} ({{ actionDetails.action }})
     </span>
   </div>
 </template>

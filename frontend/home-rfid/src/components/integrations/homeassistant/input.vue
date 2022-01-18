@@ -5,7 +5,7 @@
       class="mb-2"
       label="Entity:"
       :options="entityOptions"
-      v-model="selectedEntity"
+      v-model="selectedEntityName"
       />
     <va-select
       id="entity_action"
@@ -21,25 +21,47 @@
 export default {
   name: 'HomeAssistantInputComponent',
   props: [
-    'actionIndex'
+    'inputIndex'
   ],
   data: function() {
     return {
-      'localSelectedEntity': '',
+      /*
+        Stores all available entities as a list of dicts e.g:
+        [
+          {
+            "entity_id": "light.cube",
+            "entity_name": "Cube",
+            "actions": [
+              "turn_on",
+              "turn_off",
+              "toggle"
+            ]
+          },
+          ..
+        ]
+      */
+      'availableEntities': [],
+      'localSelectedEntityID': '',
+      'localSelectedEntityName': '',
       'localSelectedAction': '',
-      'availableOptions': [],
     }
   },
   emits: [
     'updated',
   ],
   computed: {
-    'selectedEntity': {
+    'selectedEntityName': {
       get() {
-        return this.localSelectedEntity
+        return this.localSelectedEntityName
       },
       set(value) {
-        this.localSelectedEntity = value
+        for (let e of this.availableEntities) {
+          if (e.entity_name == value) {
+            this.localSelectedEntityID = e.entity_id
+          }
+        }
+
+        this.localSelectedEntityName = value
         this.emitUpdate()
       }
     },
@@ -53,25 +75,29 @@ export default {
       }
     },
     'entityOptions': function() {
-      let entity_ids = []
-
-      if (this.availableOptions == undefined) {
+      if (this.availableEntities == undefined) {
         return []
       }
 
-      for (let entity of this.availableOptions) {
-        entity_ids.push(entity.entity_id)
+      let entityIDs = []
+
+      for (let entity of this.availableEntities) {
+        entityIDs.push(entity.entity_name)
       }
 
-      return entity_ids
+      return entityIDs
     },
     'actionsOptions': function() {
-      for (let entity of this.availableOptions) {
-        if (entity.entity_id == this.selectedEntity) {
+      if (this.availableEntities == undefined || this.localSelectedEntityID == undefined) {
+        return []
+      }
+
+      for (let entity of this.availableEntities) {
+        if (entity.entity_id == this.localSelectedEntityID) {
           return entity.actions
         }
       }
-      
+
       return []
     }
   },
@@ -80,13 +106,14 @@ export default {
       this.$emit(
         'updated',
         {
-          actionIndex: this.actionIndex,
-          entityID: this.localSelectedEntity,
+          inputIndex: this.inputIndex,
+          entityID: this.localSelectedEntityID,
+          entityName: this.localSelectedEntityName,
           action: this.localSelectedAction
         }
       )
     },
-    'getAvailableOptions': function() {
+    'getAvailableEntities': function() {
       const axios = require('axios')
       let self = this
 
@@ -96,9 +123,7 @@ export default {
       .then(function (response) {
         for (let module of response.data.actions) {
           if (module.module == "homeassistant") {
-            for (let option of module.actions) {
-              self.availableOptions.push(option)
-            }
+            self.availableEntities = module.actions
           }
         }
       })
@@ -108,7 +133,7 @@ export default {
     },
   },
   created: function() {
-    this.getAvailableOptions()
+    this.getAvailableEntities()
   }
 }
 </script>
