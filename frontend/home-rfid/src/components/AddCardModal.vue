@@ -31,7 +31,7 @@
         <HomeAssistantInputComponent
           v-if="action.module == 'homeassistant'"
           :id="'action[' + action.id + ']_input'"
-          :actionIndex="action.id"
+          :inputIndex="action.id"
           @updated="handleComponentUpdate"
           />
       </div>
@@ -41,7 +41,7 @@
         @click="addAction"
         />
 
-      {{ actions }}
+        <!--{{ actions }}-->
     </div>
   </va-modal>
 </template>
@@ -74,10 +74,10 @@ export default {
   },
   methods: {
     handleComponentUpdate(event) {
-      let actionIndex = event.actionIndex
-      delete event.actionIndex
+      let inputIndex = event.inputIndex
+      delete event.inputIndex
 
-      this.actions[actionIndex].extra = event
+      this.actions[inputIndex].extra = event
     },
     addAction: function() {
       this.actions.push(

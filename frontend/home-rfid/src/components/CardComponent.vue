@@ -6,16 +6,20 @@
       </va-card-title>
 
       <va-card-content>
-        <div
-          v-if="!expanded"
-          >
-          What's in here??
+        <div v-if="!expanded">
+          {{ card.actions.length }} Actions
         </div>
 
-        <div
-          v-if="expanded"
-          >
-          {{ card }}
+        <div v-if="expanded">
+          <div
+            v-for="(action, actionID) in card.actions"
+            :key="actionID"
+            >
+            <HomeAssistantDisplayComponent
+              v-if="action.module == 'homeassistant'"
+              :actionDetails="action.extra"
+              />
+          </div>
         </div>
 
         <div id="icons" class="mt-5 mr-4">
@@ -43,12 +47,16 @@
     size="small"
     message="This feature is WIP!"
     />
-
 </template>
 
 <script>
+import HomeAssistantDisplayComponent from '@/components/integrations/homeassistant/display.vue'
+
 export default {
   name: 'CardComponent',
+  components: {
+    HomeAssistantDisplayComponent
+  },
   props: [
     'card_id',
     'card'
@@ -71,4 +79,5 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
 </style>
