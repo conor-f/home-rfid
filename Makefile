@@ -44,5 +44,5 @@ setup_production:
 	cd backend/ && python3 -m pip install --editable .
 
 run_production:
-	cd frontend/home-rfid && npm run serve &
+	cd frontend/home-rfid && npm run serve -- --port 9090 &
 	rfid_reader
