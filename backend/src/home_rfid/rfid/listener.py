@@ -56,12 +56,16 @@ class RFIDListener:
         if self.db.is_configuring():
             self.handle_unregistered_card(card_id)
         else:
-            card = self.db.get_card(card_id)
+            try:
+                card = self.db.get_card(card_id)
 
-            if (card is None):
-                self.handle_unregistered_card(card_id)
-            else:
-                self.handle_registered_card(card)
+                if (card is None):
+                    self.handle_unregistered_card(card_id)
+                else:
+                    self.handle_registered_card(card)
+            except Exception as e:
+                print("We'll fix it... be grand:")
+                print(e)
 
     def listen(self):
         '''

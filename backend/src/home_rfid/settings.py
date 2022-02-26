@@ -1,1 +1,1 @@
-DB_LOCATION = 'resources/db.sqlite'
+DB_LOCATION = '/backend/resources/db.sqlite'

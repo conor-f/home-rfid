@@ -40,7 +40,8 @@ quick_test:
 
 setup_production:
 	cd frontend/home-rfid && npm install
-	cd backend/ && python -m pip install --editable .
+	cd backend/ && make init_db
+	cd backend/ && python3 -m pip install --editable .
 
 run_production:
 	cd frontend/home-rfid && npm run serve &
